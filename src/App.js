@@ -15,7 +15,20 @@ export default class App extends React.Component {
 
 
   handelChange = fieldName => event => {
-    this.setState({ [fieldName]: event.target.value });
+    event.preventDefault();
+    if( fieldName == "username" ) {
+      this.setState({ [fieldName]: event.target.value },
+        () => {
+           this.validUsername()
+        })
+    }
+
+    if( fieldName == "password" ) {
+      this.setState({ [fieldName]: event.target.value },
+        () => {
+           this.validPassword()
+        })
+    }
   }
 
   validUsername = () => {
@@ -39,7 +52,6 @@ export default class App extends React.Component {
   }
 
   validPassword =() => {
-    console.log(this.state.username + " " + this.state.password)
     if( ERRORS.password.regex.test(this.state.password) ) {
       this.setState({ 
         passwordError: '',
