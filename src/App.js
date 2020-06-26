@@ -10,41 +10,63 @@ export default class App extends React.Component {
       password: '',
       usernameError: '',
       passwordError: '',
-      regiesterFlag: true
     }
   };
 
 
   handelChange = fieldName => event => {
-
     this.setState({ [fieldName]: event.target.value });
   }
 
-  validator = () => {
-
-    if( ERRORS.username.regex.test(this.state.username) 
-    && ERRORS.password.regex.test(this.state.password) ) {
+  validUsername = () => {
+    if( ERRORS.username.regex.test(this.state.username) ) {
       this.setState({ 
-        usernameError: "" ,
-        passwordError: "",
-        regiesterFlag: false
-      }, () => {
+        usernameError: '',
+      },
+      () => {
         document.getElementById("username-error").innerText = this.state.usernameError;
-        document.getElementById("password-error").innerText = this.state.passwordError;
       });
+      return true;
     } else {
       this.setState({ 
-        usernameError: "Username must be 6~10 characters" ,
-        passwordError: "Password must be 6~10 numbers",
-        regiesterFlag: false
-      }, () => {
+        usernameError: "Username must be 6~10 characters",
+       },
+      () => {
         document.getElementById("username-error").innerText = this.state.usernameError;
+      });
+      return false;
+    }
+  }
+
+  validPassword =() => {
+    console.log(this.state.username + " " + this.state.password)
+    if( ERRORS.password.regex.test(this.state.password) ) {
+      this.setState({ 
+        passwordError: '',
+      },
+      () => {
         document.getElementById("password-error").innerText = this.state.passwordError;
       });
-      //console.log("username invalid")
-      
+      return true;
+    } else {
+      this.setState({ 
+        passwordError: "Password must be 6~10 numbers", 
+      },
+      () => {
+        document.getElementById("password-error").innerText = this.state.passwordError;
+      });
+      return false;
     }
-      //console.log("password invalid")
+  }
+
+  validator = () =>  {
+    let isUsernameValid = this.validUsername();
+    let isPasswordvalid = this.validPassword();
+    if( isUsernameValid && isPasswordvalid ) {
+      alert("regiester successed")
+    } else {
+      //alert("failed")
+    }
   }
 
   onSubmit = async event => {
